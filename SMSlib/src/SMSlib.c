@@ -78,31 +78,31 @@ unsigned char SMS_detect_VDP_type (void) __z88dk_fastcall __naked __preserves_re
   __asm
 
     in a,(0x7E)
-1$:
+5$:
     ld b,a
     in a,(0x7E)
     cp b
-    jr nz,1$          ; wait until stable value
+    jr nz,5$          ; wait until stable value
 
     cp #0x80
-    jr nz,1$          ; wait until line $80
+    jr nz,5$          ; wait until line $80
 
     ld l,a            ; load line number in L
 
 
     in a,(0x7E)
-2$:
+6$:
     ld b,a
     in a,(0x7E)
     cp b
-    jr nz,2$          ; wait until stable value
+    jr nz,6$          ; wait until stable value
 
     cp l
-    jr z,2$           ; wait until it is no longer on the same line
+    jr z,6$           ; wait until it is no longer on the same line
     ret c             ; we are done when new line value is less than the old one
 
     ld l,a
-    jp 2$
+    jp 6$
   __endasm;
 }
 #endif
@@ -338,12 +338,12 @@ void SMS_setLineCounter (unsigned char count) __z88dk_fastcall {
 unsigned char SMS_getVCount (void) __naked __preserves_regs(c,d,e,h,l,iyh,iyl) {
   __asm
     in a,(0x7E)
-1$:
+4$:
     ld b,a
     in a,(0x7E)
     cp b
     ret z          ; when we got the same value twice it is stable (Genesis/MegaDrive issue workaround)
-    jp 1$          ; wait until value is stable
+    jp 4$          ; wait until value is stable
   __endasm;
 }
 

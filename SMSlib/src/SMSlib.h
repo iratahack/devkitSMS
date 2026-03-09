@@ -1,3 +1,5 @@
+#ifndef _SMSLIB_H_
+#define _SMSLIB_H_
 /* **************************************************
    SMSlib - C programming library for the SMS/GG
    ( part of devkitSMS - github.com/sverx/devkitSMS )
@@ -66,7 +68,7 @@ void SMS_waitForVBlank (void);
 /* ***************************************************************** */
 
 /* macro for ROM bankswitching */
-volatile __at (0xffff) unsigned char ROM_bank_to_be_mapped_on_slot2;
+static volatile __at (0xffff) unsigned char ROM_bank_to_be_mapped_on_slot2;
 #define SMS_mapROMBank(n)       ROM_bank_to_be_mapped_on_slot2=(n)
 
 /* macro to retrieve the currently mapped ROM bank */
@@ -83,17 +85,17 @@ volatile __at (0xffff) unsigned char ROM_bank_to_be_mapped_on_slot2;
 #define SMS_restoreROMBank()    SMS_mapROMBank(_saved_slot2_ROM_bank)
 
 /* additional symbols to control other mapper slots - use with care! */
-volatile __at (0xfffe) unsigned char ROM_bank_to_be_mapped_on_slot1;
-volatile __at (0xfffd) unsigned char ROM_bank_to_be_mapped_on_slot0;
+static volatile __at (0xfffe) unsigned char ROM_bank_to_be_mapped_on_slot1;
+static volatile __at (0xfffd) unsigned char ROM_bank_to_be_mapped_on_slot0;
 
 /* macro for SRAM access */
-volatile __at (0xfffc) unsigned char SRAM_bank_to_be_mapped_on_slot2;
+static volatile __at (0xfffc) unsigned char SRAM_bank_to_be_mapped_on_slot2;
 #define SMS_enableSRAM()        SRAM_bank_to_be_mapped_on_slot2=0x08
 #define SMS_enableSRAMBank(n)   SRAM_bank_to_be_mapped_on_slot2=((((n)<<2)|0x08)&0x0C)
 #define SMS_disableSRAM()       SRAM_bank_to_be_mapped_on_slot2=0x00
 
 /* SRAM access is as easy as accessing an array of char */
-__at (0x8000) unsigned char SMS_SRAM[];
+static __at (0x8000) unsigned char SMS_SRAM[];
 
 /* ***************************************************************** */
 /* Tiles / Background handling                                       */
@@ -214,6 +216,15 @@ void SMS_copySpritestoSAT (void);
 #define METASPRITE_END   0x80
 #define SMS_addMetaSprite(x,y,metasprite)               SMS_addMetaSprite_f(((x)&0xff)|(((unsigned int)(y)&0xff)<<8),(metasprite))
 void SMS_addMetaSprite_f (unsigned int origin_yx, void *metasprite) __naked __sdcccall(1);                                     /* doesn't return anything */
+
+#ifndef MAXSPRITES
+#define MAXSPRITES        64
+#endif
+
+extern unsigned char SpriteTableY[MAXSPRITES];
+extern unsigned char SpriteTableXN[MAXSPRITES*2];
+extern unsigned char SpriteNextFree;
+extern unsigned char spritesWidth, spritesHeight, spritesTileOffset;
 
 /* ***************************************************************** */
 /* Colors / palettes handling                                        */
@@ -486,4 +497,10 @@ void SMS_debugPrintf(const unsigned char *format, ...) __naked __preserves_regs(
 void SMS_isr (void) __naked;
 void SMS_nmi_isr (void) __naked;
 
+extern void OUTI32(void) __naked;
+extern void OUTI64(void) __naked;
+extern void OUTI96(void) __naked;
+extern void OUTI128(void) __naked;
+extern void outi_block(void) __naked;
+#endif /* #ifdef _SMSLIB_H_ */
 /* EOF */

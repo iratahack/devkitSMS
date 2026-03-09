@@ -6,10 +6,6 @@
 #include "SMSlib.h"
 #include "SMSlib_common.c"
 
-extern unsigned char SpriteTableY[MAXSPRITES];
-extern unsigned char SpriteTableXN[MAXSPRITES*2];
-extern unsigned char SpriteNextFree;
-
 // VRAM unsafe functions. Fast, but dangerous!
 void UNSAFE_SMS_copySpritestoSAT (void) {
   SMS_setAddr(SMS_SATAddress);

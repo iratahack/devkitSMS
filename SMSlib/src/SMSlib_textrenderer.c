@@ -6,6 +6,10 @@
 #include "SMSlib.h"
 #include "SMSlib_common.c"
 
+#ifdef putchar
+#undef putchar
+#endif
+
 signed int SMS_TextRenderer_offset;
 
 void SMS_configureTextRenderer (signed int ascii_to_tile_offset) __z88dk_fastcall {
