@@ -27,9 +27,9 @@ void SMS_zeroSpritePalette (void) {
   ASM_LD_B_IMM(#16);
   __asm
     xor a
-2$: out (_VDPDataPort),a       ; 11
+1$: out (_VDPDataPort),a       ; 11
     .db #0x00                  ; 4 (nop)
-    djnz 2$                    ; 13 = 28 *VRAM SAFE ON GG TOO*
+    djnz 1$                    ; 13 = 28 *VRAM SAFE ON GG TOO*
   __endasm;
 }
 #else
@@ -39,9 +39,9 @@ void GG_zeroBGPalette (void) {
   ASM_LD_B_IMM(#32);
   __asm
     xor a
-3$: out (_VDPDataPort),a       ; 11
+1$: out (_VDPDataPort),a       ; 11
     .db #0x00                  ; 4 (nop)
-    djnz 3$                    ; 13 = 28 *VRAM SAFE ON GG TOO*
+    djnz 1$                    ; 13 = 28 *VRAM SAFE ON GG TOO*
   __endasm;
 }
 
@@ -51,9 +51,9 @@ void GG_zeroSpritePalette (void) {
   ASM_LD_B_IMM(#32);
   __asm
     xor a
-4$: out (_VDPDataPort),a       ; 11
+1$: out (_VDPDataPort),a       ; 11
     .db #0x00                  ; 4 (nop)
-    djnz 4$                    ; 13 = 28 *VRAM SAFE ON GG TOO*
+    djnz 1$                    ; 13 = 28 *VRAM SAFE ON GG TOO*
   __endasm;
 }
 #endif

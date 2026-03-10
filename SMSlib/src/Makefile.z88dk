@@ -27,7 +27,7 @@ AR=z88dk-z80asm
 
 ############# END OF BUILD CONFIG OPTIONS #############
 
-OPT=--max-allocs-per-node100000 -OS3 -O3
+OPT=--max-allocs-per-node100000 -SO3 -O3
 CFLAGS=+sms -compiler=sdcc $(OPT) $(CONFIG)
 PEEP_OPTIONS=-custom-copt-rules=rules.copt
 

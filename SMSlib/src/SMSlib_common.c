@@ -81,8 +81,8 @@ inline void SMS_byte_brief_array_to_VDP_data (const unsigned char *data, unsigne
 #define ASM_SHORT_XFER_TO_VDP_DATA                                \
   __asm__("                                                       \
     ld c,#_VDPDataPort                                          \n\
-    outi                       ; 16                             \n\
-    jr nz,$ASMPC-2             ; 12 = 28 *VRAM SAFE ON GG TOO*  \n\
+1$: outi                       ; 16                             \n\
+    jr nz,1$                   ; 12 = 28 *VRAM SAFE ON GG TOO*  \n\
     ")
   // writes B bytes from (HL) on to VDP
   // it's VRAM safe on GG too (at least 27 cycles between writes)

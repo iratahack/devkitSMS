@@ -43,12 +43,12 @@ __asm
   ld e,b             ; HI(size)
   ld b,c             ; LO(size)
 
-2$:
+1$:
   out(#_VDPDataPort),a ; 11
   .db #0x00            ;  4 (nop)
-  djnz  2$             ; 13 = 28 (VRAM safe on GG too)
+  djnz 1$              ; 13 = 28 (VRAM safe on GG too)
   dec e
-  jp  nz,2$
+  jp  nz,1$
   ret                ; because this function is naked
 __endasm;
 }
