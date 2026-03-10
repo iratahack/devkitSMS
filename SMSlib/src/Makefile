@@ -1,5 +1,11 @@
-CC=sdcc
+CC = sdcc
+
+ifeq ($(CC),zcc)
+AR=z88dk-z80asm
+else
 AR=sdar
+endif
+
 
 ########### BUILD CONFIGURATION ##############
 
@@ -27,68 +33,66 @@ AR=sdar
 
 ############# END OF BUILD CONFIG OPTIONS #############
 
+# Files that are compiled once and used for SMS and GG
+SRCS=SMSlib_aPLib.c SMSlib_deprecated.c SMSlib_load1bppTiles.c SMSlib_load2bppTiles.c SMSlib_loadTileMapArea.c SMSlib_loadTileMapColumn.c SMSlib_paddle.c SMSlib_paletteAdd.c SMSlib_paletteSub.c SMSlib_STC0comp.c SMSlib_STC4comp.c SMSlib_PSGaiden.c SMSlib_spriteAdv.c SMSlib_sprite.c SMSlib_STMcomp.c SMSlib_textrenderer.c SMSlib_twosprites.c SMSlib_threesprites.c SMSlib_foursprites.c SMSlib_metasprite.c SMSlib_UNSAFE.c SMSlib_UNSAFE_SAT.c SMSlib_UNSAFE_memcpy.c SMSlib_UNSAFE_aPLib.c SMSlib_VRAMmemcpy_brief.c SMSlib_VRAMmemcpy.c SMSlib_VRAMmemset.c SMSlib_zx7.c SMSlib_zx7_VRAM.c SMSlib_string.c SMSlib_getTile.c SMSlib_readVRAM.c SMSlib_debug.c
+
+ifeq ($(CC),zcc)
+OPT=--max-allocs-per-node100000 -SO3 -O3
+CFLAGS=+sms -compiler=sdcc $(OPT) $(CONFIG)
+PEEP_OPTIONS=-custom-copt-rules=rules.copt
+ARFLAGS=-x
+OBJ_EXT=c.o
+else
 OPT=--max-allocs-per-node 100000
 CFLAGS=-mz80 $(OPT) $(CONFIG)
 PEEP_OPTIONS=--peep-file peep-rules.txt
+ARFLAGS=r 
+OBJ_EXT=rel
+endif
 
 OUTPUT_LIBS=SMSlib.lib SMSlib_GG.lib
 
-# Files that are compiled once and used for SMS and GG
-SRCS=SMSlib_aPLib.c SMSlib_autotext.c SMSlib_deprecated.c SMSlib_load1bppTiles.c SMSlib_load2bppTiles.c SMSlib_loadTileMapArea.c SMSlib_loadTileMapColumn.c SMSlib_paddle.c SMSlib_paletteAdd.c SMSlib_paletteSub.c SMSlib_STC0comp.c SMSlib_STC4comp.c SMSlib_PSGaiden.c  SMSlib_spriteAdv.c SMSlib_sprite.c SMSlib_STMcomp.c SMSlib_textrenderer.c SMSlib_twosprites.c SMSlib_threesprites.c SMSlib_foursprites.c SMSlib_metasprite.rel SMSlib_UNSAFE.c SMSlib_UNSAFE_SAT.c SMSlib_UNSAFE_memcpy.c SMSlib_UNSAFE_aPLib.c SMSlib_VRAMmemcpy_brief.c SMSlib_VRAMmemcpy.c SMSlib_VRAMmemset.c SMSlib_zx7.c SMSlib_zx7_VRAM.c SMSlib_string.c SMSlib_getTile.c SMSlib_readVRAM.c SMSlib_debug.c
+# One object per common source file. Add target specific object dependencies here.
+COMMON_OBJS=$(patsubst %.c,%.$(OBJ_EXT),$(SRCS))
+SMS_SPECIFIC_OBJS=$(patsubst %.c,%.$(OBJ_EXT),SMSlib.c SMSlib_autotext.c SMSlib_spriteClip.c SMSlib_paletteZero.c SMSlib_paletteAdv.c)
+GG_SPECIFIC_OBJS=$(patsubst %.c,%_GG.$(OBJ_EXT),SMSlib.c SMSlib_autotext.c SMSlib_spriteClip.c SMSlib_paletteZero.c SMSlib_paletteAdv.c)
 
-# One .rel per common source file. Add target specific .rel dependencies here.
-OBJS_SMS=$(patsubst %.c,%.rel,$(SRCS)) SMSlib.rel SMSlib_autotext.rel SMSlib_spriteClip.rel SMSlib_paletteZero.rel SMSlib_paletteAdv.rel
-OBJS_GG=$(patsubst %.c,%.rel,$(SRCS)) SMSlib_GG.rel SMSlib_autotext_GG.rel SMSlib_spriteClip_GG.rel SMSlib_paletteZero_GG.rel SMSlib_paletteAdv_GG.rel
+OBJS_SMS=$(COMMON_OBJS) $(SMS_SPECIFIC_OBJS)
+OBJS_GG=$(COMMON_OBJS) $(GG_SPECIFIC_OBJS)
 
 ALL: $(OUTPUT_LIBS)
 
 # Library outputs
 SMSlib.lib: $(OBJS_SMS)
-	sdar r $@ $^
+	$(AR) $(ARFLAGS)$@ $^
 
 SMSlib_GG.lib: $(OBJS_GG)
-	sdar r $@ $^
+	$(AR) $(ARFLAGS)$@ $^
 
 
 # Specific rules for some files with particular compilation options or specific
 # to a target.
 
-SMSlib.rel: SMSlib.c SMSlib.h peep-rules.txt
-	#$(CC) $(CFLAGS) $(PEEP_OPTIONS) --reserve-regs-iy -c -o $@ $<
-	$(CC) $(CFLAGS) $(PEEP_OPTIONS) -c -o $@ $<
-
-SMSlib_GG.rel: SMSlib.c SMSlib.h peep-rules.txt
-	#$(CC) $(CFLAGS) $(PEEP_OPTIONS) --reserve-regs-iy -c -o $@ $< -DTARGET_GG
-	$(CC) $(CFLAGS) $(PEEP_OPTIONS) -c -o $@ $< -DTARGET_GG
-
-SMSlib_autotext_GG.rel: SMSlib_autotext.c SMSlib.h peep-rules.txt
-	$(CC) $(CFLAGS) $(PEEP_OPTIONS) -c -o $@ $< -DTARGET_GG
-
-SMSlib_spriteClip_GG.rel: SMSlib_spriteClip.c SMSlib.h peep-rules.txt
-	$(CC) $(CFLAGS) $(PEEP_OPTIONS) -c -o $@ $< -DTARGET_GG
-
-SMSlib_paletteZero_GG.rel: SMSlib_paletteZero.c SMSlib.h peep-rules.txt
-	$(CC) $(CFLAGS) $(PEEP_OPTIONS) -c -o $@ $< -DTARGET_GG
-
-SMSlib_paletteAdv_GG.rel: SMSlib_paletteAdv.c SMSlib.h peep-rules.txt
-	$(CC) $(CFLAGS) $(PEEP_OPTIONS) -c -o $@ $< -DTARGET_GG
-
 # The following are compiled without --peep-rules
-SMSlib_zx7.rel: SMSlib_zx7.c
+SMSlib_zx7.$(OBJ_EXT): SMSlib_zx7.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-SMSlib_UNSAFE_zx7.rel: SMSlib_UNSAFE_zx7.c
+SMSlib_UNSAFE_zx7.$(OBJ_EXT): SMSlib_UNSAFE_zx7.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-SMSlib_aPLib.rel: SMSlib_aPLib.c
+SMSlib_aPLib.$(OBJ_EXT): SMSlib_aPLib.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-SMSlib_paddle.rel: SMSlib_paddle.c
+SMSlib_paddle.$(OBJ_EXT): SMSlib_paddle.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 # Default rules
-%.rel: %.c SMSlib.h peep-rules.txt
+%.$(OBJ_EXT): %.c SMSlib.h peep-rules.txt
 	$(CC) $(CFLAGS) $(PEEP_OPTIONS) -c -o $@ $<
+
+# GG rules
+%_GG.$(OBJ_EXT): %.c SMSlib.h peep-rules.txt
+	$(CC) $(CFLAGS) $(PEEP_OPTIONS) -c -o $@ $< -DTARGET_GG
 
 clean:
 	rm -f $(OUTPUT_LIBS) $(OBJS_SMS) $(OBJS_GG) *.lst *.sym *.asm
