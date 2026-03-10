@@ -12,6 +12,8 @@ if(TARGET SMSlib)
     return()
 endif()
 
+set(CMAKE_STATIC_LIBRARY_PREFIX "")
+
 add_library(SMSlib STATIC
     SMSlib.c
     SMSlib_aPLib.c
