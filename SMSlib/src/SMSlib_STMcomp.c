@@ -52,8 +52,8 @@ _STM_inc_RLE_loop:
   ld a,e                    ; write tile to VRAM respecting access time costraints
   out (#0xBE),a             ;        11
   ld a,d                    ;         4
-  nop                       ; *delay* 4 (nop)
-  nop                       ; *delay* 4 (nop)
+  nop                       ; *delay* 4
+  nop                       ; *delay* 4
   dec c                     ; ttw--   4 = 27 (VRAM SAFE ON GG TOO)
   out (#0xBE),a
 
@@ -113,8 +113,8 @@ _STM_RLE_loop:
   ld a,e                    ; write tile to VRAM respecting access time costraints
   out (#0xBE),a             ;        11
   ld a,d                    ;         4
-  nop                       ; *delay* 4 (nop)
-  nop                       ; *delay* 4 (nop)
+  nop                       ; *delay* 4
+  nop                       ; *delay* 4
   dec c                     ; ttw--   4 = 27 (VRAM SAFE ON GG TOO)
   out (#0xBE),a
 

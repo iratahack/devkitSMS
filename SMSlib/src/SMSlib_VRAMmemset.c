@@ -45,7 +45,7 @@ __asm
 
 1$:
   out(#_VDPDataPort),a ; 11
-  nop                ;  4 (nop)
+  nop                ;  4
   djnz 1$            ; 13 = 28 (VRAM safe on GG too)
   dec e
   jp  nz,1$
