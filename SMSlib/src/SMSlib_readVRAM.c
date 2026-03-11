@@ -47,7 +47,7 @@ __asm
     in a,(c)                         ; 12
     ld (de),a                        ; 7
     inc de                           ; 6
-    .db #0x00                        ; 4 = VRAM safe
+    nop                              ; 4 = VRAM safe
 
     in a,(c)
     ld (de),a

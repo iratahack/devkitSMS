@@ -38,7 +38,7 @@ SRCS=SMSlib_aPLib.c SMSlib_deprecated.c SMSlib_load1bppTiles.c SMSlib_load2bppTi
 
 ifeq ($(CC),zcc)
 OPT=--max-allocs-per-node100000 -SO3 -O3
-CFLAGS=+sms -compiler=sdcc $(OPT) $(CONFIG)
+CFLAGS=+sms -compiler=sdcc --no-nop-comment $(OPT) $(CONFIG)
 PEEP_OPTIONS=-custom-copt-rules=rules.copt
 ARFLAGS=-x
 OBJ_EXT=c.o
