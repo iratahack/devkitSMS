@@ -94,7 +94,7 @@ dzx7s_outer_loop:
   ld b,a
 
 dzx7s_inner_loop:
-  nop            ; 4
+  nop                     ; 4
   di                      ; 4 = 27 (safe on every Master System or Game Gear)
   out (c),l
   out (c),h
