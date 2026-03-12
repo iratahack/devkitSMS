@@ -29,13 +29,13 @@
 #ifdef TARGET_GG
 // GG palettes are 16 entries of 12-bit color (format: ----BBBBGGGGRRRR, 4 bits per channel).
 // These mirror the SMS palette below, scaled from 2-bit (0-3) to 4-bit (0-15) per channel.
-const uint16_t pal1[] = {
+const int16_t pal1[] = {
     RGB(0,0,0),   RGB(15,0,0),  RGB(0,10,0),  RGB(0,10,10),
     RGB(10,0,0),  RGB(10,0,10), RGB(10,10,0), RGB(10,10,10),
     RGB(5,5,5),   RGB(5,5,15),  RGB(5,15,5),  RGB(5,15,15),
     RGB(15,5,5),  RGB(15,5,15), RGB(15,15,5), RGB(15,15,15)
 };
-const uint16_t pal2[] = {
+const int16_t pal2[] = {
     RGB(0,0,0),   RGB(15,0,0),  RGB(0,10,0),  RGB(0,10,10),
     RGB(10,0,0),  RGB(10,0,10), RGB(10,10,0), RGB(10,10,10),
     RGB(5,5,5),   RGB(5,5,15),  RGB(5,15,5),  RGB(5,15,15),
