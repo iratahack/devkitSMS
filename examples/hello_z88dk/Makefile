@@ -38,4 +38,4 @@ clean:
 
 distclean: clean
 	@make -C $(SMSLIB_INCDIR) CC=zcc clean
-	rm -f $(SMSLIB_LIB)
+	@rm -f $(SMSLIB_LIB)

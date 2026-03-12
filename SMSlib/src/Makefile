@@ -77,9 +77,6 @@ SMSlib_GG.lib: $(OBJS_GG)
 SMSlib_zx7.$(OBJ_EXT): SMSlib_zx7.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-SMSlib_UNSAFE_zx7.$(OBJ_EXT): SMSlib_UNSAFE_zx7.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-
 SMSlib_aPLib.$(OBJ_EXT): SMSlib_aPLib.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
