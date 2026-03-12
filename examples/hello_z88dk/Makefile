@@ -32,10 +32,11 @@ $(SMSLIB_LIB):
 	@echo "Building SMSlib for z88dk"
 	@make -C $(SMSLIB_INCDIR) CC=zcc CONFIG+=$(CONFIG)
 	@cp $(SMSLIB_INCDIR)/SMSlib.lib $(SMSLIB_BASE)/zSMSlib.lib
+	@cp $(SMSLIB_INCDIR)/SMSlib_GG.lib $(SMSLIB_BASE)/zSMSlib_GG.lib
 
 clean:
 	rm -f *.o *.bin *.sms *.map
 
 distclean: clean
 	@make -C $(SMSLIB_INCDIR) CC=zcc clean
-	@rm -f $(SMSLIB_LIB)
+	@rm -f $(SMSLIB_BASE)/zSMSlib_GG.lib $(SMSLIB_BASE)/zSMSlib.lib
