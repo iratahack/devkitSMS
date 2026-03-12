@@ -404,10 +404,12 @@ void SMS_isr (void) __naked {
   __asm
     push af
     push hl
+#ifndef __Z88DK
     in a,(_VDPStatusPort)                   /* also aknowledge interrupt at VDP */
     ld (_SMS_VDPFlags),a                    /* write flags to SMS_VDPFlags variable */
     rlca
     jp nc,1$
+#endif
     ld hl,#_VDPBlank                        /* frame interrupt */
     ld (hl),#0x01
     ld hl,(_KeysStatus)
