@@ -1,10 +1,40 @@
 # SMSlib example for z88dk
 
-For platform(s): SMS, Game Gear
+**Platforms:** SEGA Master System, Game Gear
+
+## What is z88dk?
+z88dk is an open-source C/assembly toolchain for 8080 and Z80-family systems (including the Sega Master System and Game Gear). It includes compilers, assemblers, linkers, and platform libraries for building ROMs for many classic machines. See [z88dk.org](https://www.z88dk.org/).
+
+## Install z88dk with Snap (Linux)
+
+If you are using WSL, this also works in WSL environments where `snapd` is available.
+
+Install the Snap package:
+
+```sh
+sudo snap install z88dk --edge
+```
+
+Create the recommended Snap aliases:
+
+```sh
+sudo snap alias z88dk.z88dk-appmake z88dk-appmake
+sudo snap alias z88dk.z88dk-asmstyle z88dk-asmstyle
+sudo snap alias z88dk.z88dk-dis z88dk-dis
+sudo snap alias z88dk.z88dk-z80asm z88dk-z80asm
+sudo snap alias z88dk.z88dk-zx0 z88dk-zx0
+sudo snap alias z88dk.zcc zcc
+```
+
+Notes:
+ - `zcc` is required for `make` / `make GG=1`.
+ - `z88dk-appmake` and `z88dk-z80asm` are invoked by the z88dk build/link flow.
+ - `z88dk-dis` is required for `make dis`.
+ - A prebuilt Windows distribution is also available from the nightly builds: [nightly.z88dk.org](https://nightly.z88dk.org/).
 
 ## Purpose
 
-Show how to:
+This example demonstrates how to:
  - Compile and link code with SMSlib and z88dk for both SMS and Game Gear
  - Initialize the SMSlib subsystem (`SMS_init`, `SMS_useFirstHalfTilesforSprites`, `SMS_autoSetUpTextRenderer`, `SMS_loadBGPalette`/`GG_loadBGPalette`, `SMS_loadSpritePalette`/`GG_loadSpritePalette`)
  - Link z88dk interrupts to SMSlib ISRs (`add_raster_int(SMS_isr)`, `add_pause_int(SMS_nmi_isr)` — SMS only)
@@ -24,7 +54,7 @@ Initial screen (before any controller input):
 
 The included Makefile will build the library before building the application.
 
-It is assumed that z88dk is in your path.
+It is assumed that z88dk is in your path and the appropriate Snap aliases have been configured, if necessary.
 
 ### Building for SMS (default)
 
