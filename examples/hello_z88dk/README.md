@@ -28,7 +28,7 @@ sudo snap alias z88dk.zcc zcc
 
 Notes:
  - `zcc` is required for `make` / `make GG=1`.
- - `z88dk-appmake` and `z88dk-z80asm` are invoked by the z88dk build/link flow.
+   - `z88dk-appmake` and `z88dk-z80asm` are invoked by the z88dk build/link flow.
  - `z88dk-dis` is required for `make dis`.
  - A prebuilt Windows distribution is also available from the nightly builds: [nightly.z88dk.org](https://nightly.z88dk.org/).
 
