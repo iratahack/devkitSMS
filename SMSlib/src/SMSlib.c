@@ -358,8 +358,12 @@ void SMS_isr (void) __naked {
     push iy
     push ix
   __endasm;
+#ifndef __Z88DK
   SMS_VDPFlags=VDPStatusPort;               /* read status port and write it to SMS_VDPFlags */
   if (SMS_VDPFlags & 0x80) {                /* this also aknowledge interrupt at VDP */
+#else
+  if (1) {
+#endif
     VDPBlank=true;                          /* frame interrupt */
     PreviousKeysStatus=KeysStatus;
     PreviousMDKeysStatus=MDKeysStatus;
@@ -395,8 +399,12 @@ void SMS_isr (void) __naked {
     pop de
     pop bc
     pop af
+#ifndef __Z88DK
     ei                                      /* Z80 disables interrupts on ISR so we should re-enable them explicitly. */
     reti                                    /* this is here because function is __naked */
+#else
+    ret
+#endif
   __endasm;
 }
 #else
@@ -455,8 +463,12 @@ void SMS_isr (void) __naked {
 2$:
     pop hl
     pop af
+#ifndef __Z88DK
     ei                                      /* Z80 disables interrupts on ISR so we should re-enable them explicitly. */
     reti                                    /* this is here because function is __naked */
+#else
+    ret
+#endif
   __endasm;
 }
 #endif

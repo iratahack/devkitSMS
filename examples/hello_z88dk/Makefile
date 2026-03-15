@@ -45,7 +45,7 @@ $(ROM): $(OBJS)
 
 $(SMSLIB_LIB):
 	@echo "Building SMSlib for z88dk"
-	@make -C $(SMSLIB_INCDIR) CC=zcc CONFIG+=$(CONFIG)
+	@make -C $(SMSLIB_INCDIR) CC=zcc CONFIG+="$(CONFIG)"
 	@cp $(SMSLIB_INCDIR)/SMSlib.lib $(SMSLIB_BASE)/zSMSlib.lib
 	@cp $(SMSLIB_INCDIR)/SMSlib_GG.lib $(SMSLIB_BASE)/zSMSlib_GG.lib
 
