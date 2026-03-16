@@ -9,7 +9,7 @@ SMSLIB_INCDIR=$(SMSLIB_BASE)/src
 GG ?= 0
 
 TARGET=+sms
-
+PEEP_OPTIONS=-custom-copt-rules=$(SMSLIB_INCDIR)/rules.copt
 ifeq ($(GG),1)
 CONFIG=-DTARGET_GG
 SUBTYPE=-subtype=gamegear
@@ -22,7 +22,7 @@ SMSLIB_LIB=$(SMSLIB_BASE)/zSMSlib.lib
 ROM_EXT=sms
 endif
 
-CFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) -compiler=sdcc -I$(SMSLIB_INCDIR) -c
+CFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) $(PEEP_OPTIONS) -compiler=sdcc -I$(SMSLIB_INCDIR) -c
 LDFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) -pragma-redirect:fputc_cons=_SMS_putchar -m -l$(SMSLIB_LIB) -create-app
 
 PROGNAME=hello
