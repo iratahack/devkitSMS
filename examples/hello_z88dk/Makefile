@@ -15,6 +15,7 @@ CONFIG=-DTARGET_GG
 SUBTYPE=-subtype=gamegear
 SMSLIB_LIB=$(SMSLIB_BASE)/zSMSlib_GG.lib
 ROM_EXT=gg
+TILE_OPTS=--gamegear
 else
 CONFIG=-DVDPTYPE_DETECTION
 SUBTYPE=
@@ -26,8 +27,9 @@ CFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) $(PEEP_OPTIONS) -compiler=sdcc -I$(SMSLIB_
 LDFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) -pragma-redirect:fputc_cons=_SMS_putchar -m -l$(SMSLIB_LIB) -create-app
 
 PROGNAME=hello
+ASRC=$(wildcard *.asm)
 SRCS=$(wildcard *.c)
-OBJS=$(patsubst %.c,%.o,$(SRCS))
+OBJS=$(patsubst %.c,%.o,$(SRCS)) $(patsubst %.asm,%.o,$(ASRC))
 ROM=$(PROGNAME).$(ROM_EXT)
 
 .PHONY: all dis clean distclean
@@ -40,6 +42,9 @@ dis: all
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ $<
 
+ship.o: ship.asm ship.tiles ship.pal left_ship.tiles right_ship.tiles
+	$(CC) $(CFLAGS) -o $@ $<
+
 $(ROM): $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $^
 
@@ -49,8 +54,10 @@ $(SMSLIB_LIB):
 	@cp $(SMSLIB_INCDIR)/SMSlib.lib $(SMSLIB_BASE)/zSMSlib.lib
 	@cp $(SMSLIB_INCDIR)/SMSlib_GG.lib $(SMSLIB_BASE)/zSMSlib_GG.lib
 
+%.tiles: %.png
+	./sms_converter.py --tile8x16 --remove-blank --no-map --nomirror $(TILE_OPTS) $^ $*
 clean:
-	rm -f *.o *.bin *.sms *.gg *.map
+	rm -f *.o *.bin *.sms *.gg *.map *.pal *.tiles *.map
 
 distclean: clean
 	@make -C $(SMSLIB_INCDIR) CC=zcc clean

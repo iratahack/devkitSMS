@@ -216,6 +216,10 @@ void SMS_copySpritestoSAT (void);
 #define METASPRITE_END   0x80
 #define SMS_addMetaSprite(x,y,metasprite)               SMS_addMetaSprite_f(((x)&0xff)|(((unsigned int)(y)&0xff)<<8),(metasprite))
 void SMS_addMetaSprite_f (unsigned int origin_yx, void *metasprite) __naked __sdcccall(1);                                     /* doesn't return anything */
+#define SMS_updateMetaSpritePosition(id,x,y,ms)   SMS_updateMetaSpritePosition_f(((unsigned char)(id))|(((unsigned int)((unsigned char)(y)))<<8),(x),(ms))
+void SMS_updateMetaSpritePosition_f (unsigned int id_y, unsigned int x, const void *metasprite) __naked __z88dk_callee __sdcccall(1);
+#define SMS_updateMetaSpriteImage(id,tiles)        SMS_updateMetaSpriteImage_f((unsigned char)(id),(tiles))
+void SMS_updateMetaSpriteImage_f (unsigned char id, const void *tiles) __naked __sdcccall(1);
 
 #ifndef MAXSPRITES
 #define MAXSPRITES        64
@@ -286,6 +290,9 @@ void SMS_putchar (unsigned char c);         /* faster than plain putchar() */
 void SMS_print (const unsigned char *str);  /* faster than printf() for unformatted strings */
 /* Macro to print a string at a given location */
 #define SMS_printatXY(x,y,s) do{SMS_setNextTileatXY(x,y);SMS_print(s);}while(0)
+void SMS_printWithAttr (const unsigned char *str, unsigned int attr);
+/* Macro to print a string at a given location with tile attribute flags (e.g. TILE_PRIORITY) */
+#define SMS_printatXYwithAttr(x,y,s,attr) do{SMS_setNextTileatXY(x,y);SMS_printWithAttr(s,attr);}while(0)
 
 /* decompress compressed data to RAM */
 void SMS_decompressZX7 (const void *src, void *dst) __naked __sdcccall(1);

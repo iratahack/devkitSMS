@@ -26,3 +26,12 @@ void SMS_print (const unsigned char *str) {
   }
 }
 
+void SMS_printWithAttr (const unsigned char *str, unsigned int attr) {
+  register int off = SMS_TextRenderer_offset;
+
+  while (*str) {
+    SMS_setTile(*str + off + attr);
+    str++;
+  }
+}
+
