@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "SMSlib.h"
 
+extern uint8_t SpriteNextFree;
 extern const uint8_t spritePalette[];
 extern const uint8_t shipSprite[];
 extern const uint8_t leftShip[];
@@ -16,9 +17,9 @@ static const uint8_t shipMetaSprite[] = {8, 0, 0x00,
                                          16, 16, 0x08,
                                          24, 16, 0x0a,
                                          METASPRITE_END};
-static const uint8_t shipTilesCenter[] = {0x00, 0x02, 0x04, 0x06, 0x08, 0x0a, METASPRITE_END};
-static const uint8_t shipTilesLeft[] = {0x0c, 0x0e, 0x10, 0x12, 0x14, 0x16, METASPRITE_END};
-static const uint8_t shipTilesRight[] = {0x18, 0x1a, 0x1c, 0x1e, 0x20, 0x22, METASPRITE_END};
+static const uint8_t shipTilesCenter[] = {0x00, 0x02, 0x04, 0x06, 0x08, 0x0a, 0xff};
+static const uint8_t shipTilesLeft[] = {0x0c, 0x0e, 0x10, 0x12, 0x14, 0x16, 0xff};
+static const uint8_t shipTilesRight[] = {0x18, 0x1a, 0x1c, 0x1e, 0x20, 0x22, 0xff};
 
 #define SPRITE_WIDTH 32
 #define SPRITE_HEIGHT 32
@@ -56,8 +57,6 @@ const int16_t pal1[] = {
 const uint8_t pal1[] = {0x00, 0x03, 0x08, 0x28, 0x02, 0x22, 0x0A, 0x2A,
                         0x15, 0x35, 0x1D, 0x3D, 0x17, 0x37, 0x1F, 0x3F};
 #endif
-
-extern uint8_t SpriteNextFree;
 
 void main(void)
 {

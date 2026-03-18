@@ -47,7 +47,7 @@ void SMS_updateMetaSpriteImage_f (unsigned char id, const void *tiles) __naked _
 
 update_image_loop:
     ld a,(hl)            ; read next tile from array
-    cp #METASPRITE_END
+    cp #255		 ; This means you cannot use tile ID 255
     ret z
 
     ld (de),a            ; write tile to SpriteTableXN[sprite*2+1]
