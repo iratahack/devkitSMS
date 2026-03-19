@@ -12,6 +12,7 @@ extern const uint8_t shipSprite[];
 extern const uint8_t leftShip[];
 extern const uint8_t rightShip[];
 extern const uint8_t missile[];
+extern uint8_t timer;  // Declared in sms_crt0
 
 static const uint8_t missileMetaSprite[] = {0, 0, 0x24,
                                             14, 0, 0x24,
@@ -197,7 +198,6 @@ void main(void)
     static uint8_t freeTail = 0;
     static uint8_t freeCount = 0;
     static uint8_t i;
-    static uint8_t frameCount = 0;
     static uint8_t lastDirectionalTapFrame = 0;
     static uint8_t hasDirectionalTap = 0;
     static uint8_t doubleSpeedMode = 0;
@@ -307,7 +307,6 @@ void main(void)
 
         // Halt until the next interrupt (vblank at ~60 Hz), synchronising the loop to the display.
         __asm__("halt");
-        frameCount++;
 
         // Copy the sprite buffer to the Sprite Attribute Table in VRAM.
         // Must be called during vblank (right after halt) to avoid tearing.
@@ -334,10 +333,10 @@ void main(void)
         // Detect a new directional tap on the D-pad as a whole (0 -> any direction).
         if (directionalNow && !directionalPrev)
         {
-            if (hasDirectionalTap && (uint8_t)(frameCount - lastDirectionalTapFrame) <= DOUBLE_TAP_WINDOW)
+            if (hasDirectionalTap && (uint8_t)(timer - lastDirectionalTapFrame) <= DOUBLE_TAP_WINDOW)
                 doubleSpeedMode = 1;
             hasDirectionalTap = 1;
-            lastDirectionalTapFrame = frameCount;
+            lastDirectionalTapFrame = timer;
         }
 
         // Exit double-speed mode when no directional input

@@ -26,7 +26,7 @@ endif
 CFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) $(PEEP_OPTIONS) -compiler=sdcc -I$(SMSLIB_INCDIR) -c
 LDFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) -pragma-redirect:fputc_cons=_SMS_putchar -m -l$(SMSLIB_LIB) -create-app
 
-PROGNAME=hello
+PROGNAME=shooter
 ASRC=$(wildcard *.asm)
 SRCS=$(wildcard *.c)
 OBJS=$(patsubst %.c,%.o,$(SRCS)) $(patsubst %.asm,%.o,$(ASRC))
