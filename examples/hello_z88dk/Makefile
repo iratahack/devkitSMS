@@ -27,9 +27,9 @@ CFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) $(PEEP_OPTIONS) -compiler=sdcc -I$(SMSLIB_
 LDFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) -pragma-redirect:fputc_cons=_SMS_putchar -m -l$(SMSLIB_LIB) -create-app
 
 PROGNAME=shooter
-ASRC=$(wildcard *.asm)
+ASRC=$(wildcard *.s)
 SRCS=$(wildcard *.c)
-OBJS=$(patsubst %.c,%.o,$(SRCS)) $(patsubst %.asm,%.o,$(ASRC))
+OBJS=$(patsubst %.c,%.o,$(SRCS)) $(patsubst %.s,%.o,$(ASRC))
 ROM=$(PROGNAME).$(ROM_EXT)
 
 .PHONY: all dis clean distclean
@@ -42,7 +42,7 @@ dis: all
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ $<
 
-ship.o: ship.asm ship.tiles ship.pal left_ship.tiles right_ship.tiles missile.tiles
+ship.o: ship.s ship.tiles ship.pal left_ship.tiles right_ship.tiles missile.tiles
 	$(CC) $(CFLAGS) -o $@ $<
 
 $(ROM): $(OBJS)
