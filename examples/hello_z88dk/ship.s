@@ -1,4 +1,3 @@
-
     public _spritePalette
     public _shipSprite
     public _leftShip
@@ -7,23 +6,22 @@
 
     section rodata_compiler
 
-    ; Sprite palette data
+; Sprite palette data
 _spritePalette:
     binary "ship.pal"
 
-    ; Ship sprite tiles
+; Ship sprite tiles
 _shipSprite:
     binary "ship.tiles"
 
-    ; Left-facing ship sprite tiles
+; Left-facing ship sprite tiles
 _leftShip:
     binary "left_ship.tiles"
 
-    ; Right-facing ship sprite tiles
+; Right-facing ship sprite tiles
 _rightShip:
     binary "right_ship.tiles"
 
-    ; Missile sprite tiles
+; Missile sprite tiles
 _missile:
     binary "missile.tiles"
-
