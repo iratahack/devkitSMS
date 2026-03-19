@@ -23,7 +23,7 @@ SMSLIB_LIB=$(SMSLIB_BASE)/zSMSlib.lib
 ROM_EXT=sms
 endif
 
-CFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) $(PEEP_OPTIONS) -compiler=sdcc -I$(SMSLIB_INCDIR) -c
+CFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) $(PEEP_OPTIONS) -compiler=sdcc -SO3 -O3 -I$(SMSLIB_INCDIR) -c
 LDFLAGS=$(TARGET) $(SUBTYPE) $(CONFIG) -pragma-redirect:fputc_cons=_SMS_putchar -m -l$(SMSLIB_LIB) -create-app
 
 PROGNAME=shooter
