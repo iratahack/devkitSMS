@@ -42,7 +42,7 @@ dis: all
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ $<
 
-ship.o: ship.asm ship.tiles ship.pal left_ship.tiles right_ship.tiles
+ship.o: ship.asm ship.tiles ship.pal left_ship.tiles right_ship.tiles missile.tiles
 	$(CC) $(CFLAGS) -o $@ $<
 
 $(ROM): $(OBJS)
