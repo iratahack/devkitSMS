@@ -39,7 +39,7 @@ This example demonstrates how to:
  - Initialize the SMSlib subsystem (`SMS_init`, `SMS_useFirstHalfTilesforSprites`, `SMS_autoSetUpTextRenderer`, `SMS_loadBGPalette`/`GG_loadBGPalette`, `SMS_loadSpritePalette`/`GG_loadSpritePalette`)
  - Link z88dk interrupts to SMSlib ISRs (`add_raster_int(SMS_isr)`, `add_pause_int(SMS_nmi_isr)` — SMS only)
  - Display text using `printf`, `SMS_print`, and `SMS_printatXY` (positioned with `SMS_setNextTileatXY`), accounting for the GG viewport offset
- - Set up and move a double-wide sprite (two adjoining sprites) with the D-pad (`SMS_addTwoAdjoiningSprites`, `SMS_updateSpritePosition`, `SMS_copySpritestoSAT`), clamped to the visible screen area
+ - Set up and move a sprite using the built-in charset tiles with the D-pad (`SMS_addMetaSprite`, `SMS_updateMetaSpritePosition`, `SMS_copySpritestoSAT`), clamped to the visible screen area
  - Change sprite palette colour on button 1 and button 2 press/release (`SMS_getKeysStatus`, `SMS_setSpritePaletteColor`/`GG_setSpritePaletteColor`)
  - Pause and unpause the game (Pause button — SMS only), saving and restoring the tilemap (`SMS_queryPauseRequested`, `SMS_resetPauseRequest`, `SMS_saveTileMapArea`, `SMS_loadTileMapArea`)
  - Soft-reset on the Reset button — SMS only (`SMS_displayOff`, `SMS_zeroSpritePalette`, `SMS_zeroBGPalette`)

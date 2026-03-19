@@ -5,24 +5,14 @@
 #include "SMSlib.h"
 
 extern uint8_t SpriteNextFree;
-extern const uint8_t spritePalette[];
-extern const uint8_t shipSprite[];
-extern const uint8_t leftShip[];
-extern const uint8_t rightShip[];
 
-static const uint8_t shipMetaSprite[] = {8, 0, 0x00,
-                                         16, 0, 0x02,
-                                         0, 16, 0x04,
-                                         8, 16, 0x06,
-                                         16, 16, 0x08,
-                                         24, 16, 0x0a,
+// Charset starts at space (ASCII 32). Tile index = ASCII code - 32
+// '@' = 64, so tile = 64-32 = 32; 'B' = 66, so tile = 66-32 = 34
+static const uint8_t shipMetaSprite[] = {0, 0, 32,  // '@' character
+                                         8, 0, 34,  // 'B' character
                                          METASPRITE_END};
-static const uint8_t shipTilesCenter[] = {0x00, 0x02, 0x04, 0x06, 0x08, 0x0a, 0xff};
-static const uint8_t shipTilesLeft[] = {0x0c, 0x0e, 0x10, 0x12, 0x14, 0x16, 0xff};
-static const uint8_t shipTilesRight[] = {0x18, 0x1a, 0x1c, 0x1e, 0x20, 0x22, 0xff};
-
-#define SPRITE_WIDTH 32
-#define SPRITE_HEIGHT 32
+#define SPRITE_WIDTH 16
+#define SPRITE_HEIGHT 16
 
 #ifdef TARGET_GG
 // Game Gear visible screen: 160x144
@@ -53,7 +43,7 @@ const int16_t pal1[] = {
     RGB(15, 5, 5), RGB(15, 5, 15), RGB(15, 15, 5), RGB(15, 15, 15)};
 #else
 // SMS palettes are 16 entries of 6-bit colour (format: --BBGGRR, 2 bits per channel).
-// pal1 is loaded as the BG palette; spritePalette (from the asset converter) as the sprite palette.
+// Used for both BG and sprite palettes.
 const uint8_t pal1[] = {0x00, 0x03, 0x08, 0x28, 0x02, 0x22, 0x0A, 0x2A,
                         0x15, 0x35, 0x1D, 0x3D, 0x17, 0x37, 0x1F, 0x3F};
 #endif
@@ -75,23 +65,17 @@ void main(void)
     add_pause_int(SMS_nmi_isr);
 #endif
 
-    // Use tiles 256-511 for sprites, leaving tiles 0-255 for backgrounds/text.
-    SMS_useFirstHalfTilesforSprites(0);
+    // Use tiles 0-127 for sprites, leaving tiles 128-255 for backgrounds/text.
+    SMS_useFirstHalfTilesforSprites(1);
     // Load the built-in font into VRAM, mapping tile indices to ASCII codes (tile = char - 32).
     SMS_autoSetUpTextRenderer();
 
 #ifdef TARGET_GG
     GG_loadBGPalette(pal1);
-    GG_loadSpritePalette(spritePalette);
-    SMS_loadTiles(shipSprite, 0x100, 32 * 12);
-    SMS_loadTiles(leftShip, 0x10c, 32 * 12);
-    SMS_loadTiles(rightShip, 0x118, 32 * 12);
+    GG_loadSpritePalette(pal1);
 #else
     SMS_loadBGPalette(pal1);
-    SMS_loadSpritePalette(spritePalette);
-    SMS_loadTiles(shipSprite, 0x100, 32 * 12);
-    SMS_loadTiles(leftShip, 0x10c, 32 * 12);
-    SMS_loadTiles(rightShip, 0x118, 32 * 12);
+    SMS_loadSpritePalette(pal1);
 #endif
 
     SMS_setNextTileatXY(TEXT_X_OFFSET, TEXT_Y_OFFSET + 0);
@@ -148,19 +132,9 @@ void main(void)
 
         // Left or Right?
         if ((keyStatus & PORT_A_KEY_LEFT) && spriteX > SCREEN_X_OFFSET)
-        {
             spriteX -= 2;
-            SMS_updateMetaSpriteImage(shipSpriteID, shipTilesLeft);
-        }
         else if ((keyStatus & PORT_A_KEY_RIGHT) && spriteX < SCREEN_X_OFFSET + SCREEN_WIDTH - SPRITE_WIDTH)
-        {
             spriteX += 2;
-            SMS_updateMetaSpriteImage(shipSpriteID, shipTilesRight);
-        }
-        else
-        {
-            SMS_updateMetaSpriteImage(shipSpriteID, shipTilesCenter);
-        }
 
         // XOR with the previous frame's status: bits that differ are keys that changed state.
         lastKey ^= keyStatus;
@@ -176,7 +150,7 @@ void main(void)
             if (keyStatus & PORT_A_KEY_1)
                 SMS_setSpritePaletteColor(1, 0x3f); // Pressed
             else
-                SMS_setSpritePaletteColor(1, 0x10); // Released
+                SMS_setSpritePaletteColor(1, 0x03); // Released
 #endif
         }
 
@@ -186,12 +160,12 @@ void main(void)
             if (keyStatus & PORT_A_KEY_2)
                 GG_setSpritePaletteColor(1, RGB(15, 15, 5)); // Pressed
             else
-                GG_setSpritePaletteColor(1, RGB(15, 0, 0)); // Released
+                GG_setSpritePaletteColor(1, RGB(15, 0, 1)); // Released
 #else
             if (keyStatus & PORT_A_KEY_2)
                 SMS_setSpritePaletteColor(1, 0x0f); // Pressed
             else
-                SMS_setSpritePaletteColor(1, 0x10); // Released
+                SMS_setSpritePaletteColor(1, 0x03); // Released
 #endif
         }
 
