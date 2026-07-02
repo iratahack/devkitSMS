@@ -215,6 +215,19 @@ A few additional third-party libraries are available and can be used with devkit
 * Joe's [Banjo](https://github.com/joffb/banjo) - a FM+PSG (YM2413+SN76489) sound driver supporting furnace tracker modules.
 
 
+### Release your SMS/GG game on a cartridge:
+
+Once your game is done and tested, you might want to consider releasing it on a cartridge. There are a few options available at the moment:
+- Raphnet's reprogrammable [4Mbit cartridge](https://www.raphnet-tech.com/products/sms_4Megabit_cartridge/index.php) has complete SEGA Mapper support and _can_ also come with its plastic shell. It's also available for the [Game Gear](https://www.raphnet-tech.com/products/gamegear_4megabit_cartridge_pcb/index.php).
+- Retrocircuits's reprogrammable [4Mbit cartridge](https://hoskinson-industries.myshopify.com/collections/master-system-other/products/sega-master-system-game-pcb-board) has complete SEGA Mapper support and _can_ also be expanded to **8Mbit** _or_ have SRAM/FRAM added. There's also a 4Mbit cartridge available for the [Game Gear](https://hoskinson-industries.myshopify.com/collections/sega-gamegear-other/products/sega-gamegear-homebrew-pcb-no-sram) and there's even a variant [with SRAM](https://hoskinson-industries.myshopify.com/collections/sega-gamegear-other/products/sega-gamegear-homebrew-pcb-w-sram).
+- doragasu's [FrugalMapper](https://gitlab.com/doragasu/sms-sl2map) supports up to 4Mbit too, but the SEGA Mapper support is limited to _slot-2 only_ which means it **will** work with devkitSMS programs that don't use banked _code_. It's a cheap solution but you have to order the printed circuit boards yourself from JLC (or a similar PCB factory) and you'll have to provide plastic shells too (you can buy new shells [here](https://hoskinson-industries.myshopify.com/collections/master-system-game-shells?sort_by=price-ascending) or [here](https://everdrive.me/accessories/shell-for-master-x7.html) for instance).
+- the [ModestMapper](https://github.com/sverx/ModestMapper). This is a solution very similar to doragasu's FrugalMapper, as it's a derivate of that. It supports the SEGA mapper slot-1 & slot-2 which means it can be also used for devkitSMS programs that use banked _code_.
+
+Using any of these, your ROM needs to be programmed onto each cartridge. For Raphnet's solution you can use for instance its [cartridge reader/programmer](https://www.raphnet-tech.com/products/sms_cartridge_reader_programmer/index.php) and for doragasu's solution you can use its [MegaWiFi programmer](https://gitlab.com/doragasu/mw-prog). Regarding the ModestMapper cartridge, either programmer should work. Retrocircuit's solution instead has its own [programmer](https://hoskinson-industries.myshopify.com/collections/master-system-other/products/retrocircuits-programmer-sega-master-system) and there's a version of that that also supports the [Game Gear cartridges](https://hoskinson-industries.myshopify.com/collections/sega-gamegear-other/products/retrocircuits-programmer-sega-master-system-gamegear).
+
+Publishers like [2Minds](https://www.2minds.fr/en/) are also a nice option, but they're currently shutting down operations. [Côté Gamers](https://cotegamers.com/shop/en/41-master-system) released a few games too. We hope there will be other publishers soon.
+
+
 ### Support devkitSMS:
 
 Check [SUPPORT.md](https://github.com/sverx/devkitSMS/blob/master/SUPPORT.md) to see how you can contribute to development.
@@ -222,32 +235,35 @@ Check [SUPPORT.md](https://github.com/sverx/devkitSMS/blob/master/SUPPORT.md) to
 
 ### Some of the many cool games developed with devkitSMS so far include:
 
-* armixer24's [Tetris4GG](https://www.smspower.org/Homebrew/Tetris4GG-GG)
-* badcomputer's [Astro Climber](https://www.smspower.org/Homebrew/AstroClimber-SMS), [Razing Core](https://www.smspower.org/Homebrew/RazingCore-SMS), [Frontier Force](https://www.smspower.org/Homebrew/FrontierForce-SMS), [Blast Arena](https://www.smspower.org/Homebrew/BlastArena-SMS)
-* cireza's [the Sword of Stone](https://www.smspower.org/Homebrew/SwordOfStone-GG)
+* armixer24's [Tetris4GG](https://www.smspower.org/Homebrew/Tetris4GG-GG) for the SEGA Game Gear
+* badcomputer's [Road Fighter](https://www.smspower.org/Homebrew/RoadFighter-SMS), [Astro Climber](https://www.smspower.org/Homebrew/AstroClimber-SMS), [Razing Core](https://www.smspower.org/Homebrew/RazingCore-SMS), [Frontier Force](https://www.smspower.org/Homebrew/FrontierForce-SMS), [Blast Arena](https://www.smspower.org/Homebrew/BlastArena-SMS)
+* cireza's [the Sword of Stone](https://www.smspower.org/Homebrew/SwordOfStone-GG) for the SEGA Game Gear
 * Cyttorak's [Gemitas](https://www.smspower.org/Homebrew/Gemitas-SMS)
-* dark's [Yawi](https://www.smspower.org/Homebrew/Yawi-SG)
+* dark's [Akalabeth](https://www.smspower.org/Homebrew/Akalabeth1000-SG) and [Yawi](https://www.smspower.org/Homebrew/Yawi-SG) for the SEGA SG-1000
+* Digital Fluff's [Arpabet Speech Synthesizer](https://www.smspower.org/Homebrew/ArpabetSpeechSynthesizer-SG) for the SEGA SG-1000
 * Disjointed Studio's [Weka Invaders](https://www.smspower.org/Homebrew/WekaInvaders-SMS)
 * Dr.Ludos' [Dangerous Demolition](https://www.smspower.org/Homebrew/DangerousDemolition-SMS)
-* Eruiz's [Lunar Skirmish](https://www.smspower.org/Homebrew/LunarSkirmish-SMS), [Galactic Revenge](https://www.smspower.org/Homebrew/GalacticRevenge-SMS), [Astro Force](https://www.smspower.org/Homebrew/AstroForce-SMS), [Bomb Jack Remake](https://www.smspower.org/Homebrew/BombJackRemake-SMS), [Green Beret Remake](https://www.smspower.org/Homebrew/GreenBeretRemake-SMS), [Crazy Pinball](https://www.smspower.org/Homebrew/CrazyPinball-SMS), [Electronic Dreams](https://www.smspower.org/Homebrew/ElectronicDreams-SMS), [Dead Gunner](https://www.smspower.org/Homebrew/DeadGunner-SMS), [Mini MSX](https://www.smspower.org/Homebrew/MiniMSX-SMS), [Silver Valley](https://www.smspower.org/Homebrew/SilverValley-SMS)
-* Guy's [Grail of the Gods](https://www.smspower.org/Homebrew/GrailOfTheGods-SMS), [Deathtrap Dungeon](https://www.smspower.org/Homebrew/DeathtrapDungeon-SMS), [Nyle - Lyne in SokobanLand](https://www.smspower.org/Homebrew/SokobanEngine-SMS)
+* Eruiz's [Fridge Fury](https://www.smspower.org/Homebrew/FridgeFury-SMS), [Lunar Skirmish](https://www.smspower.org/Homebrew/LunarSkirmish-SMS), [Galactic Revenge](https://www.smspower.org/Homebrew/GalacticRevenge-SMS), [Astro Force](https://www.smspower.org/Homebrew/AstroForce-SMS), [Bomb Jack Remake](https://www.smspower.org/Homebrew/BombJackRemake-SMS), [Green Beret Remake](https://www.smspower.org/Homebrew/GreenBeretRemake-SMS), [Crazy Pinball](https://www.smspower.org/Homebrew/CrazyPinball-SMS), [Electronic Dreams](https://www.smspower.org/Homebrew/ElectronicDreams-SMS), [Dead Gunner](https://www.smspower.org/Homebrew/DeadGunner-SMS), [Mini MSX](https://www.smspower.org/Homebrew/MiniMSX-SMS), [Silver Valley](https://www.smspower.org/Homebrew/SilverValley-SMS)
+* Guy's [Egle in Parallel Worlds](https://www.smspower.org/Homebrew/EgleInParallelWorlds-SMS), [Grail of the Gods](https://www.smspower.org/Homebrew/GrailOfTheGods-SMS), [Deathtrap Dungeon](https://www.smspower.org/Homebrew/DeathtrapDungeon-SMS), [Nyle - Lyne in SokobanLand](https://www.smspower.org/Homebrew/SokobanEngine-SMS)
+* haroldoop's [Stalactites](https://www.smspower.org/Homebrew/Stalactites-SMS)
 * Integer Max Games' [Knight Shift](https://www.smspower.org/Homebrew/KnightShift-SMS)
 * Jean Monos' [Little Sokoban](https://www.smspower.org/Homebrew/LittleSokoban-SMS)
 * JoppyFurr's [Snepzhen Solitaire](https://www.smspower.org/Homebrew/SnepzhenSolitaire-SMS), [Ants](https://www.smspower.org/Homebrew/AntsForMasterSystem-SMS)
 * Louis the SEGA Nerd's [Monaco Master](https://www.smspower.org/Homebrew/MonacoMaster-SMS), [Sub Assault](https://www.smspower.org/Homebrew/SubAssault-SMS)
-* Mojon Twins' [Cheril Perils Classic](https://www.smspower.org/Homebrew/CherilPerilsClassic-SG), [Jet Paco and Jet Puri](https://www.smspower.org/Homebrew/JetPacoAndJetPuri-SG), [Che Man](https://www.smspower.org/Homebrew/CheMan-SG), [Sgt. Helmet Training Day](https://www.smspower.org/Homebrew/SgtHelmetTrainingDay-SG), [Super Uwol](https://www.smspower.org/Homebrew/SuperUwol-SG)
+* Mojon Twins' [Cheril Perils Classic](https://www.smspower.org/Homebrew/CherilPerilsClassic-SG), [Jet Paco and Jet Puri](https://www.smspower.org/Homebrew/JetPacoAndJetPuri-SG), [Che Man](https://www.smspower.org/Homebrew/CheMan-SG), [Sgt. Helmet Training Day](https://www.smspower.org/Homebrew/SgtHelmetTrainingDay-SG) and [Super Uwol](https://www.smspower.org/Homebrew/SuperUwol-SG) for the SEGA SG-1000
 * Naarshakta's [Stygian Quest](https://www.smspower.org/Homebrew/StygianQuest-SMS)
 * offgame's [Pixner II](https://www.smspower.org/Homebrew/Pixner2-SMS)
 * old_pirate's [Iron Man](https://www.smspower.org/Homebrew/IronMan-SMS)
 * PSCD Games' [Alien Cat 2](https://www.smspower.org/Homebrew/AlienCat2-SMS)
-* raphnet's [SKBN](https://www.smspower.org/Homebrew/SKBN-SMS), [Extreme Volleyball Infernal League](https://www.smspower.org/Homebrew/ExtremeVolleyballInfernalLeague-SMS), [Goblin Kart Rescue](https://www.smspower.org/Homebrew/GoblinKartRescue-SMS)
+* raphnet's [Capture GO](https://www.smspower.org/Homebrew/SmsCaptureGo-SMS), [SKBN](https://www.smspower.org/Homebrew/SKBN-SMS), [Extreme Volleyball Infernal League](https://www.smspower.org/Homebrew/ExtremeVolleyballInfernalLeague-SMS), [Goblin Kart Rescue](https://www.smspower.org/Homebrew/GoblinKartRescue-SMS)
 * Ricco's [Where Is It?](https://www.smspower.org/Homebrew/WhereIsIt-SMS), [Do The Same](https://www.smspower.org/Homebrew/DoTheSame-SMS)
 * slogra's [Jumping Jack'son](https://www.smspower.org/Homebrew/JumpingJackson-SMS)
 * SteveProXNA's [Skazka](https://www.smspower.org/Homebrew/Skazka-SMS), [Simpsons Trivia](https://www.smspower.org/Homebrew/SimpsonsTrivia-SMS)
+* TheGouldFish's [Atoms](https://www.smspower.org/Homebrew/Atoms-SMS)
 * Tuxedo Games' [Alter Ego](https://www.smspower.org/Homebrew/AlterEgo-SMS), [Gotris](https://www.smspower.org/Homebrew/Gotris-SMS)
-* Will Britton's [Land on my Base](https://www.smspower.org/Homebrew/LandOnMyBase-SMS), [Eggie Chuck](https://www.smspower.org/Homebrew/EggieChuck-SMS), [Primates](https://www.smspower.org/Homebrew/Primates-SMS)
+* undeveloper's [Intergalactic Prophylactic](https://www.smspower.org/Homebrew/IntergalacticProphylactic-SMS), [Land on my Base](https://www.smspower.org/Homebrew/LandOnMyBase-SMS), [Eggie Chuck](https://www.smspower.org/Homebrew/EggieChuck-SMS), [Primates](https://www.smspower.org/Homebrew/Primates-SMS)
 * x7r's [Sutoroku](https://www.smspower.org/Homebrew/Sutoroku-SMS)
-* xfixium's [Ms. Pac-Man Classic](https://www.smspower.org/Homebrew/MsPacManClassic-SMS)
+* xfixium's [Castlevania](https://www.smspower.org/Homebrew/Castlevania-SMS), [Ms. Pac-Man Classic](https://www.smspower.org/Homebrew/MsPacManClassic-SMS)
 
 More games/demos can be found [here](https://www.smspower.org/Tags/DevkitSMS)
 

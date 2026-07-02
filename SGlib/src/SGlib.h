@@ -153,12 +153,18 @@ unsigned char SG_readCVNumPad (unsigned char which);
 #define PORT_A_KEY_1      0x0040
 #define PORT_A_KEY_2      0x0080
 
+#define PORT_A_SAC_YELLOW PORT_A_KEY_1  /* Super Action Controller yellow key */
+#define PORT_A_SAC_RED    PORT_A_KEY_2  /* Super Action Controller red key */
+
 #define PORT_B_KEY_UP     0x0100
 #define PORT_B_KEY_RIGHT  0x0200
 #define PORT_B_KEY_DOWN   0x0400
 #define PORT_B_KEY_LEFT   0x0800
 #define PORT_B_KEY_1      0x4000
 #define PORT_B_KEY_2      0x8000
+
+#define PORT_B_SAC_YELLOW PORT_B_KEY_1  /* Super Action Controller yellow key */
+#define PORT_B_SAC_RED    PORT_B_KEY_2  /* Super Action Controller red key */
 
 #define PORT_A_CV_NUMPAD  0
 #define PORT_B_CV_NUMPAD  1
@@ -176,6 +182,9 @@ unsigned char SG_readCVNumPad (unsigned char which);
 #define CV_NUMPAD_STAR    0x09
 #define CV_NUMPAD_HASH    0x06
 #define CV_NUMPAD_NONE    0x0F
+
+#define CV_SAC_PURPLE     0x08    /* Super Action Controller purple key */
+#define CV_SAC_BLUE       0x04    /* Super Action Controller blue key */
 #endif
 
 #define PORT_A_KEY_START  PORT_A_KEY_1  /* handy alias */
@@ -218,6 +227,7 @@ void SG_debugPrintf(const unsigned char *format, ...) __naked __preserves_regs(a
 void SG_initBitmapMode (unsigned char foreground_color, unsigned char background_color);
 #define  SG_putPixel(x,y,color)      SG_putPixel_f((color),((x)<<8)|(y))
 void SG_putPixel_f (unsigned char color, unsigned int xy_coords) __preserves_regs(iyh,iyl);
+void SG_setPixel (unsigned char x, unsigned char y) __preserves_regs(iyh,iyl);
 
 /* low level functions */
 void SG_VRAMmemcpy (unsigned int dst, void *src, unsigned int size);

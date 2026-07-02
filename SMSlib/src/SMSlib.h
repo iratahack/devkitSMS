@@ -95,7 +95,7 @@ static volatile __at (0xfffc) unsigned char SRAM_bank_to_be_mapped_on_slot2;
 #define SMS_disableSRAM()       SRAM_bank_to_be_mapped_on_slot2=0x00
 
 /* SRAM access is as easy as accessing an array of char */
-static __at (0x8000) unsigned char SMS_SRAM[];
+static __at (0x8000) unsigned char SMS_SRAM[16384];
 
 /* ***************************************************************** */
 /* Tiles / Background handling                                       */
@@ -396,6 +396,9 @@ void SMS_setLineInterruptHandler (void (*theHandlerFunction)(void)) __z88dk_fast
 void SMS_setLineCounter (unsigned char count) __z88dk_fastcall;
 #define SMS_enableLineInterrupt()   SMS_VDPturnOnFeature(0x0010)   /* turns on line IRQ */
 #define SMS_disableLineInterrupt()  SMS_VDPturnOffFeature(0x0010)  /* turns off line IRQ */
+
+/* Game Gear NMI handling */
+void GG_setNMIHandler (void (*theHandlerFunction)(void)) __z88dk_fastcall;
 
 __sfr __at (0xbf) SMS_VDPControlPort;
 /* alternative version of SMS_setBGScrollX to be used in the line interrupt handler for raster effects */
