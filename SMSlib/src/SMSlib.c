@@ -63,6 +63,7 @@ void (*SMS_theFrameInterruptHandler)(void);
 volatile unsigned int KeysStatus,PreviousKeysStatus;
 #ifdef MD_PAD_SUPPORT
 volatile unsigned int MDKeysStatus,PreviousMDKeysStatus;
+volatile unsigned char DetectedPadType;
 #endif
 
 /* variables for sprite windowing and clipping */
@@ -70,6 +71,21 @@ unsigned char spritesHeight=8, spritesWidth=8, spritesTileOffset=1;
 
 /* 'empty' line interrupt handler */
 void (*SMS_theLineInterruptHandler)(void);
+
+#ifdef __Z88DK
+/* devkitSMS crt0 isn't used with z88dk: map its OUTI block symbols onto z88dk's sms_clib ones */
+void SMS_z88dk_outi_aliases (void) __naked {
+__asm
+  EXTERN asm_SMSlib_outi_block, asm_SMSlib_outi32, asm_SMSlib_outi64, asm_SMSlib_outi128
+  PUBLIC _outi_block, _OUTI32, _OUTI64, _OUTI96, _OUTI128
+  defc _outi_block = asm_SMSlib_outi_block
+  defc _OUTI32 = asm_SMSlib_outi32
+  defc _OUTI64 = asm_SMSlib_outi64
+  defc _OUTI96 = asm_SMSlib_outi128 + 64
+  defc _OUTI128 = asm_SMSlib_outi128
+__endasm;
+}
+#endif
 
 #ifdef TARGET_GG
 /* If non-NULL, will be called by NMI_isr after acknowledging */
@@ -130,11 +146,9 @@ void SMS_init (void) {
   for (i=0;i<sizeof(VDPReg_init);i++)
     SMS_write_to_VDPRegister(i,VDPReg_init[i]);
   /* reset sprites */
-  SMS_initSprites();
+  // SMS_initSprites();  not really needed, as the variable is zero already
   SMS_copySpritestoSAT();
 #ifndef TARGET_GG
-  /* init Pause (SMS only) */
-  SMS_resetPauseRequest();
 #ifdef VDPTYPE_DETECTION
   /* PAL/NTSC detection (SMS only) */
   DISABLE_INTERRUPTS;
@@ -145,6 +159,11 @@ void SMS_init (void) {
   else if (detected==0xDA)
     VDPType=VDP_NTSC;
 #endif
+#endif
+  SMS_theLineInterruptHandler=outi_block;  // to fix the issues with the ED X7 snapshots
+#ifndef TARGET_GG
+  /* init Pause (SMS only) */
+  SMS_resetPauseRequest();
 #endif
 }
 
@@ -337,7 +356,10 @@ void SMS_setFrameInterruptHandler (void (*theHandlerFunction)(void)) __z88dk_fas
 #endif
 
 void SMS_setLineInterruptHandler (void (*theHandlerFunction)(void)) __z88dk_fastcall {
-  SMS_theLineInterruptHandler=theHandlerFunction;
+  if (theHandlerFunction)
+    SMS_theLineInterruptHandler=theHandlerFunction;
+  else
+    SMS_theLineInterruptHandler=outi_block;   // to fix the issues with the ED X7 snapshots
 }
 
 void SMS_setLineCounter (unsigned char count) __z88dk_fastcall {
@@ -376,8 +398,15 @@ void SMS_isr (void) __naked {
     VDPBlank=true;                          /* frame interrupt */
     PreviousKeysStatus=KeysStatus;
     PreviousMDKeysStatus=MDKeysStatus;
-    KeysStatus=~(((IOPortH)<<8)|IOPortL);   /* TH status unimportant */
+    KeysStatus=~(((IOPortH)<<8)|IOPortL);   /* TH status important only if an MD pad is connected */
     IOPortCtrl=TH_LO;
+    __asm
+      nop
+      nop
+      sub a,#0
+      nop
+      nop  ; 23 cycles
+    __endasm;                               /* additional delay that makes some wireless MD pads work correctly */
     MDKeysStatus=IOPortL;
     if (!(MDKeysStatus & 0x0C)) {           /* verify it's a MD pad */
       MDKeysStatus=(~MDKeysStatus)&0x30;    /* read MD_A & MD_START */
@@ -389,9 +418,13 @@ void SMS_isr (void) __naked {
         IOPortCtrl=TH_HI;
         MDKeysStatus|=(~IOPortL)&0x0F;      /* read MD_MODE, MD_X, MD_Y, MD_Z */
         IOPortCtrl=TH_LO;
+        DetectedPadType=PAD_TYPE_MD_6BTN;
+      } else {
+        DetectedPadType=PAD_TYPE_MD_3BTN;
       }
     } else {
       MDKeysStatus=0;                       /* (because one might have detached his MD pad) */
+      DetectedPadType=PAD_TYPE_SMS;
     }
     IOPortCtrl=TH_HI;                       /* leave TH high */
 #ifndef NO_FRAME_INT_HOOK
